@@ -4,13 +4,15 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
+import { LoginComponent } from "./login.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'employee', pathMatch: 'full' },
+  { path: '', redirectTo: 'employees', pathMatch: 'full' },
   { path: 'employees', component: EmployeeListComponent },
   { path: 'add', component: CreateEmployeeComponent },
   { path: 'update/:id', component: UpdateEmployeeComponent },
   { path: 'details/:id', component: EmployeeDetailsComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
@@ -18,3 +20,12 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+//
+//
+// const appRoutes: Routes = [
+//   { path: '', component: HomeComponent },
+//   { path: 'login', component: LoginComponent },
+//   { path: '**', redirectTo: '' }
+// ];
+//
+// export const routing = RouterModule.forRoot(appRoutes);

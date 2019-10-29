@@ -1,41 +1,54 @@
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import { AppService } from './app.service';
 
 @Component({
-  selector: 'login',
-  templateUrl: './app/login/login.component.html'
+  templateUrl: './login.component.html'
 })
 
-export class LoginComponent implements OnInit {
-  model: any = {};
+export class LoginComponent  {
+  // model: any = {};
+  //
+  // constructor(
+  //   private route: ActivatedRoute,
+  //   private router: Router,
+  //   private http: HttpClient
+  // ) { }
+  //
+  // ngOnInit() {
+  //   sessionStorage.setItem('token', '');
+  // }
+  //
+  // login() {
+  //   let url = 'http://localhost:8080/springboot-crud-rest/api/v1/login';
+  //   this.http.post<Observable<boolean>>(url, {
+  //     userName: this.model.username,
+  //     password: this.model.password
+  //   }).subscribe(isValid => {
+  //     if (isValid) {
+  //       sessionStorage.setItem(
+  //         'token',
+  //         btoa(this.model.username + ':' + this.model.password)
+  //       );
+  //       this.router.navigate(['']);
+  //     } else {
+  //       alert("Authentication failed.")
+  //     }
+  //   });
+  // }
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient
-  ) { }
+  credentials = {username: '', password: ''};
 
-  ngOnInit() {
-    sessionStorage.setItem('token', '');
+  constructor(private app: AppService, private http: HttpClient, private router: Router) {
   }
 
   login() {
-    let url = 'http://localhost:8082/login';
-    this.http.post<Observable<boolean>>(url, {
-      userName: this.model.username,
-      password: this.model.password
-    }).subscribe(isValid => {
-      if (isValid) {
-        sessionStorage.setItem(
-          'token',
-          btoa(this.model.username + ':' + this.model.password)
-        );
-        this.router.navigate(['']);
-      } else {
-        alert("Authentication failed.")
-      }
+    this.app.authenticate(this.credentials, () => {
+      this.router.navigateByUrl('/');
     });
+    return false;
   }
+
 }
