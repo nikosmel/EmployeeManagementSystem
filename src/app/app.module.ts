@@ -1,27 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {Injectable, NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CreateEmployeeComponent } from './create-employee/create-employee.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
-import {HTTP_INTERCEPTORS, HttpClientModule, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { UpdateEmployeeComponent } from './update-employee/update-employee.component';
-import { LoginComponent }  from "./login.component";
-import { AppService} from "./app.service";
-
-@Injectable()
-export class XhrInterceptor implements HttpInterceptor {
-
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const xhr = req.clone({
-      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
-    });
-    return next.handle(xhr);
-  }
-}
-
+import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
+import {BasicAuthHtppInterceptorService} from "./service/basic-auth-http-interceptor.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +18,8 @@ export class XhrInterceptor implements HttpInterceptor {
     EmployeeDetailsComponent,
     EmployeeListComponent,
     UpdateEmployeeComponent,
-    LoginComponent
+    LoginComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +27,11 @@ export class XhrInterceptor implements HttpInterceptor {
     FormsModule,
     HttpClientModule
   ],
-  providers: [AppService, { provide: HTTP_INTERCEPTORS,
-    useClass: XhrInterceptor, multi: true }],
+
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
